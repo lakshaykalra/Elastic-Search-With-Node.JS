@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "removeComments": false,
+      "emitDecoratorMetadata": true,
+      "moduleResolution": "node",
+      "experimentalDecorators": true,
+      "sourceMap": true,
+      "noImplicitAny": false,
+      "baseUrl": ".",
+      "paths": {},
+      "outDir": "./dist",
+      "typeRoots": [
+        "./src/interfaces/index.d.ts"
+      ]
+    },
+    "types": [
+      "node",
+    ],
+   
+    "exclude": [
+      "node_modules"
+    ]
+  }
