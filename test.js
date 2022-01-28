@@ -10,47 +10,47 @@ import ndjson from 'ndjson'
 // const { pipeline } = require('stream/promises');
 
 
-// async function saveJSON() {
+async function saveJSON() {
 
-//     try{
-
-//         const response=await fetch('https://jsonplaceholder.typicode.com/todos')
-
-
-//      // await streamPipeline(response.body,createWriteStream('./test.json')) // 1
-
-//       response.body.pipe(createWriteStream('./test.ndjson')) // 2
-
-//      console.log('<<<<<<<<<end<<<',)
-
-//     } catch(e){
-//         console.log('>>>>>>>',e)
-//     }
-
-// }
-
-// saveJSON()
-
-async function saveNDJSON(){
     try{
 
         const response=await fetch('https://jsonplaceholder.typicode.com/todos')
 
-        response.body.pipe(ndjson.parse()).on('data',obj=>{
-           console.log('<<<<<,obj>>>>>>',obj)
-        })
 
+     // await streamPipeline(response.body,createWriteStream('./test.json')) // 1
 
+      response.body.pipe(createWriteStream('./test.json')) // 2
 
-
+     console.log('<<<<<<<<<end<<<',)
 
     } catch(e){
-        console.log('<<<<<<<<<<<<<<',e)
-        return e
+        console.log('>>>>>>>',e)
     }
+
 }
 
-saveNDJSON()
+saveJSON()
+
+// async function saveNDJSON(){
+//     try{
+
+//         const response=await fetch('https://jsonplaceholder.typicode.com/todos')
+
+//         response.body.pipe().on('data',obj=>{
+//            console.log('<<<<<,obj>>>>>>',obj)
+//         })
+
+
+
+
+
+//     } catch(e){
+//         console.log('<<<<<<<<<<<<<<',e)
+//         return e
+//     }
+// }
+
+// saveNDJSON()
 // import { createReadStream } from 'fs'
 
 // import split2 from 'split2'

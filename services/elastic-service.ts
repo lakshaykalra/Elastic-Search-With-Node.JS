@@ -1,6 +1,13 @@
 import {Client} from '@elastic/elasticsearch'
-import { createReadStream } from 'fs'
-import split2 from 'split2'
+import { createReadStream,readFile,writeFile } from 'fs'
+import * as split from 'split2'
+import * as util from 'util'
+const readFileAsync=util.promisify(readFile)
+const writeFileAsync=util.promisify(writeFile)
+
+console.log('<<<<<<<<<',split)
+
+
 
 
 
@@ -51,17 +58,18 @@ async function searchData(search){
     try{
 
         const data=await client.search({
-            index:'products',
-            body:{
-                query:{
-                    match:{
-                        name:search
-                    }
-                }
-            }
+            index:'comments',
+            q:`*${search}*`
+            // body:{
+            //     query:{
+            //         match:{
+            //             title:search
+            //         }
+            //     }
+            // }
         })
 
-        return data
+        return data.body.hits.hits
 
 
 
@@ -101,13 +109,39 @@ async function prepare() {
     
 }
 
+async function createNDJSONFile() {
+    try{
+
+        let data:any=await readFileAsync('./test.json')
+
+        // data=data.toString()
+
+
+        let wholeArray=JSON.parse(data)
+        console.log('<<<<<<<<<whole array>>>>>>>>.',typeof wholeArray)
+
+        wholeArray=wholeArray.map(element=>JSON.stringify(element)).join('\n')
+
+        await writeFileAsync('./test.ndjson',wholeArray)
+
+
+    }catch(e){
+
+        console.log('<<<<<ERROR IN NDJSON FNCTION>>>>>')
+        throw e
+    }
+    
+}
+
 async function storeBulkData() {
     try{
 
 
-        await prepare()
+        // await prepare()
 
-        let datasource=createReadStream('./test.json').pipe(split2())
+        await createNDJSONFile()
+
+        let datasource=createReadStream('./test.ndjson').pipe(split())
 
       const result=  await client.helpers.bulk({
             datasource,
